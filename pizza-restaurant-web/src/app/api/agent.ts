@@ -25,7 +25,7 @@ const PizzaAdmin={
     details:(id:string)=>requests.get(`/pizza/${id}`),
     create:(pizza:IPizza)=>requests.post('/pizza/', pizza),
     update:(pizza:IPizza)=>requests.put(`/pizza/${pizza.id}`, pizza),
-    delete:(id:string)=>requests.delete(`/pizza/${id}`),
+    delete:(id:number)=>requests.delete(`/pizza/${id}`),
 }
 
 export default {

@@ -1,11 +1,15 @@
-import { Card, CardActionArea, CardMedia, CardContent, Typography, CardActions, Button, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core'
-import React from 'react'
+import { Card, Tooltip, CardMedia, CardContent, Typography, CardActions, Button, makeStyles, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton } from '@material-ui/core'
+import React, { useContext } from 'react'
 import { IPizza } from '../../../app/models/pizza'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteIcon from '@material-ui/icons/Delete'
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import cheese from '../../../assets/cheese.svg';
-import { PizzaStatus } from '../../../app/models/pizzaStatus'
+import { PizzaStatus } from '../../../app/models/pizzaStatus';
+import PizzaForm from './PizzaForm';
+import { RootStoreContext } from '../../../app/stores/rootStore'
+import  DeleteModal  from '../../../app/common/modals/DeleteModal'
+import { useLocation, useParams } from 'react-router-dom'
 
 const useStyles = makeStyles({
     root: {
@@ -35,11 +39,15 @@ const useStyles = makeStyles({
   });
   
 interface IProps{
-    pizza:IPizza
+    pizza: IPizza
 }
 
 export const PizzaCard:React.FC<IProps> = ({pizza}) => {
     const classes = useStyles();
+    const rootStore = useContext(RootStoreContext);
+    const{openModal}=rootStore.modalStore;
+    const{deletePizza} = rootStore.pizzaStore;
+
     function createData( small: number, medium: number, large: number) {
         return {small, medium, large };
     }
@@ -82,8 +90,28 @@ export const PizzaCard:React.FC<IProps> = ({pizza}) => {
     </TableContainer>
           </CardContent>
         <CardActions className={classes.cardActions}>
-          <EditIcon/>
-          <DeleteIcon/>
+        <Tooltip title="Edit">
+        <IconButton 
+          color="primary" 
+          aria-label="Edit" 
+          component="span" 
+          onClick={()=>openModal(<PizzaForm pizza={pizza}/>, "Edit Pizza")}
+          >
+           <EditIcon/>
+        </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton 
+           color="primary" 
+           aria-label="Delete" 
+           component="span" 
+           onClick={() => openModal(<DeleteModal deleteFunction = {deletePizza} id = {pizza.id}/>, "Delete Pizza")}
+
+          //  //(e: React.MouseEvent<HTMLButtonElement>)=>deletePizza(e, pizza.id)}
+          >
+           <DeleteIcon/>
+        </IconButton>
+        </Tooltip>
           {pizza.status===PizzaStatus.UNAVAILABLE?
           <VisibilityOffIcon style={{ marginLeft: "7em"}}/>:null}
         </CardActions>

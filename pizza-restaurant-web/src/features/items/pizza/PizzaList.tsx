@@ -4,10 +4,12 @@ import { PizzaCard } from './PizzaCard';
 import { IPizza } from '../../../app/models/pizza';
 import { useTheme } from '@material-ui/core/styles';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import { withRouter } from 'react-router-dom';
+import { useLocation, withRouter } from 'react-router-dom';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import  AddPizzaDialog  from './AddPizzaDialog';
 import { observer } from 'mobx-react-lite';
+import PizzaForm from './PizzaForm';
+import { useEffect } from 'react';
 
 
 const useStyles = makeStyles(theme => ({
@@ -47,13 +49,14 @@ const useStyles = makeStyles(theme => ({
 const PizzaList:React.FC = () => {
     const classes = useStyles();
     const rootStore = useContext(RootStoreContext)
-    const{pizzaList}=rootStore.pizzaStore
+    const{pizzaList, loadPizza}=rootStore.pizzaStore
     const{openModal}=rootStore.modalStore
-
-    // useEffect(()=>{
-    //   pizzaAdminStore.loadPizza()
-    // },[pizzaAdminStore])
     
+    useEffect(()=>{
+      loadPizza()
+    },[loadPizza])
+    
+
     return (
      <>
     <div style={{ padding: 20 }}>
@@ -65,7 +68,7 @@ const PizzaList:React.FC = () => {
           color="secondary" 
           className={classes.button}
           startIcon={<AddCircleOutlineIcon/>}
-          onClick={()=>openModal(<AddPizzaDialog/>, "Add Pizza")}>
+          onClick={()=>openModal(<PizzaForm/>, "Add Pizza")}>
            Add new item
         </Button>
         </Grid>

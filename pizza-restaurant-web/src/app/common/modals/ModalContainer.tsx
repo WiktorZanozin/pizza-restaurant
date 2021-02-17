@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { RootStoreContext } from '../../stores/rootStore';
 import { observer } from 'mobx-react-lite';
-import { Dialog, DialogContent, DialogTitle, makeStyles, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, makeStyles, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   dialogWrapper: {
@@ -19,16 +19,15 @@ const ModalContainer = () => {
     const classes = useStyles();
     const rootStore = useContext(RootStoreContext);
     const {modal: {open, body, title}, closeModal} = rootStore.modalStore;
-    console.log(body)
     
   return (
     <Dialog open={open} onClose={closeModal} fullWidth={true} maxWidth="sm" classes={{ paper: classes.dialogWrapper }}>
        <DialogTitle className={classes.dialogTitle}>
-                <div style={{ display: 'flex' }}>
-                    <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
-                        {title}
-                    </Typography>
-                </div>
+          <div style={{ display: 'flex' }}>
+            <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+              {title}
+            </Typography>
+          </div>
         </DialogTitle>
       <DialogContent>{body}</DialogContent>
     </Dialog>

@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import ModalContainer from '../common/modals/ModalContainer';
 import PizzaList from '../../features/items/pizza/PizzaList';
 import Footer from '../../features/footer/Footer';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC<RouteComponentProps> =({location})=>{
   // useEffect(()=>{
@@ -20,13 +21,14 @@ const App: React.FC<RouteComponentProps> =({location})=>{
 
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>``
-       <ModalContainer/> 
-        <Navbar  
+      <BrowserRouter> 
+         <Navbar  
           value={value}
           setValue={setValue}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}/>
+        <ToastContainer position='bottom-right'/>
+        <ModalContainer/>
         <Switch>
           <Route exact path='/pizza' component={PizzaList} />
         </Switch>

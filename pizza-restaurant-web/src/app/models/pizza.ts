@@ -1,7 +1,7 @@
 import { PizzaStatus } from "./pizzaStatus";
 
 export interface IPizza{
-    id:string;
+    id:number;
     title: string;
     description:string;
     priceForSmall: number;
@@ -21,7 +21,7 @@ export interface IPizzaFormValues{
 export class PizzaFormValues implements IPizzaFormValues {
     title: string = '';
     description: string = '';
-    priceForSmall: number = 0;
+    priceForSmall: number = 2;
     priceForMedium: number = 0;
     priceForLarge: number = 0;
 

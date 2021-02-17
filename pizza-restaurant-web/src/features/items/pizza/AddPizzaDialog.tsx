@@ -1,5 +1,5 @@
 
-import { TextField, Button, Avatar, Box, Container, CssBaseline, Grid, Typography, makeStyles } from '@material-ui/core'
+import { TextField, Button, Grid, makeStyles } from '@material-ui/core'
 import { observer } from 'mobx-react-lite';
 import React, { useContext, useState } from 'react'
 import { RootStoreContext } from '../../../app/stores/rootStore';
@@ -9,7 +9,7 @@ import {
   composeValidators,
   hasLengthGreaterThan
 } from 'revalidate';
-import { Form as FinalForm} from 'react-final-form';
+import { Field, Form as FinalForm} from 'react-final-form';
 import { PizzaFormValues } from '../../../app/models/pizza';
 import { withRouter } from 'react-router-dom';
 
@@ -49,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
 
 const AddPizzaDialog: React.FC = () => {
     // const rootStore = useContext(RootStoreContext);
-  const classes = useStyles();
   const rootStore=useContext(RootStoreContext);
   const {createPizza} = rootStore.pizzaStore;
   const {closeModal} = rootStore.modalStore;
   const [pizzaItem] = useState(new PizzaFormValues());
+  console.log(pizzaItem)
   const [] = useState(false);
 
   // useEffect(() => {
@@ -66,17 +66,26 @@ const AddPizzaDialog: React.FC = () => {
   //       .finally(() => setLoading(false));
   //   }
   // }, [loadPizza, match.params.id]);
+  const sleep = (ms:any) => new Promise(resolve => setTimeout(resolve, ms))
 
-  const handleFinalFormSubmit = (values: any) => {
-    const { date, time, ...pizzaItem } = values;
-    if (!pizzaItem.id) {
-      let newPizza = {
-        ...pizzaItem,
-      };
-      createPizza(newPizza);
-    // } else {
-    //   editPizza(newPizza);
-    }
+
+  const handleFinalFormSubmit = async(values: any) => {
+    // console.log(values)
+    // const { date, time, ...pizzaItem } = values;
+    // if (!pizzaItem.id) {
+    //   let newPizza = {
+    //     ...pizzaItem,
+    //   };
+    //   console.log(newPizza)
+    //   createPizza(newPizza);
+    // // } else {
+    // //   editPizza(newPizza);
+ //   }
+
+ 
+  await sleep(300)
+  console.log(values)
+
   };
 
     return (
@@ -85,25 +94,26 @@ const AddPizzaDialog: React.FC = () => {
         initialValues={pizzaItem}
         onSubmit={handleFinalFormSubmit}
         render={({ handleSubmit, pristine, submitting}) => (
-         <form onSubmit={handleSubmit} noValidate>
+         <form onSubmit={handleSubmit}>
            <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="name"
-                name="Name"
+            <Field
                 variant="outlined"
-                required
                 fullWidth
-                id="Name"
+                required
+                name="title"
+                component={TextField}
+                type="text"
                 label="Name"
-                autoFocus
+                autoComplete="title"
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
+            <Field
                 variant="outlined"
                 required
                 fullWidth
+                component={TextField}
                 id="description"
                 label="Description"
                 name="description"
@@ -118,8 +128,8 @@ const AddPizzaDialog: React.FC = () => {
                 id="small"
                 label="Price for small"
                 type="number"
-                name="small"
-                autoComplete="small"
+                name="priceForSmall"
+                autoComplete="priceForSmall"
               />
             </Grid>
             <Grid item xs={4}>
@@ -130,8 +140,8 @@ const AddPizzaDialog: React.FC = () => {
                 id="medium"
                 label="Price for medium"
                 type="number"
-                name="medium"
-                autoComplete="medium"
+                name="priceForMedium"
+                autoComplete="priceForSmall"
               />
             </Grid>
             <Grid item xs={4}>
@@ -142,8 +152,8 @@ const AddPizzaDialog: React.FC = () => {
                 id="large"
                 label="Price for large"
                 type="number"
-                name="large"
-                autoComplete="large"
+                name="priceForLarge"
+                autoComplete="priceForSmall"
               />
             </Grid>
             <Grid item style={{ marginTop: 16 }}>
@@ -161,7 +171,7 @@ const AddPizzaDialog: React.FC = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    disabled={submitting}
+                   // disabled={submitting}
                   >
                     Submit
                   </Button>
