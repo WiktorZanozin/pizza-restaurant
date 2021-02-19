@@ -10,9 +10,10 @@ import TextField from '@material-ui/core/TextField';
 import { RootStoreContext } from '../../../app/stores/rootStore';
 import { IPizza, PizzaFormValues } from '../../../app/models/pizza';
 import { observer } from 'mobx-react-lite';
-import { Box, DialogActions } from '@material-ui/core';
+import { Box, DialogActions, FormControlLabel, RadioGroup,  Radio } from '@material-ui/core';
 import { MuiCurrencyFormat } from './../../../app/common/form/MuiCurrencyFormat';
 import NumberFormat from 'react-number-format';
+import { PizzaStatus } from '../../../app/models/pizzaStatus';
 
 
 interface IProps{
@@ -24,7 +25,6 @@ const PizzaForm: React.FC<IProps> = ({pizza}) => {
   const {createPizza, editPizza} = rootStore.pizzaStore;
   const {closeModal} = rootStore.modalStore;
   const [pizzaItem] = useState(new PizzaFormValues());
-  console.log(pizzaItem)
   const [] = useState(false);
   if(pizza?.id){
 
@@ -33,7 +33,8 @@ const PizzaForm: React.FC<IProps> = ({pizza}) => {
  
   
   const handleSubmitForm = (data:any) => {
-    pizza?.id? editPizza(data):createPizza(data)
+    pizza?.id? editPizza(pizza?.id, data) : createPizza(data)
+    closeModal()
   };
   
   return (
@@ -82,7 +83,7 @@ const PizzaForm: React.FC<IProps> = ({pizza}) => {
             />
           </FormControl>
           </Grid>
-          <Grid item xs={12} sm={4}>
+          {/* <Grid item xs={12} sm={4}>
           <FormControl fullWidth  variant="outlined">
             <Controller
               name="priceForSmall"
@@ -101,6 +102,28 @@ const PizzaForm: React.FC<IProps> = ({pizza}) => {
               defaultValue = {pizza?.id? pizza?.priceForSmall : 0}
               helperText={fieldsErrors.priceForMedium ? fieldsErrors.priceForMedium.message : null}
               variant="outlined"
+              rules={{
+                required: 'Required'
+              }}
+            />
+          </FormControl>
+          </Grid> */}
+          <Grid item xs={12} sm={4}>
+          <FormControl fullWidth  variant="outlined">
+            <Controller
+              name="priceForSmall"
+              as={
+                <TextField
+                  id="priceForSmall"
+                  type="number"
+                  helperText={fieldsErrors.priceForSmall ? fieldsErrors.priceForMedium.message : null}
+                  variant="outlined"
+                  label="Price for medium"
+                  error={fieldsErrors.priceForSmall}
+                />
+              }
+              control={control}
+              defaultValue = {pizza?.id? pizza?.priceForSmall : 0}
               rules={{
                 required: 'Required'
               }}
@@ -151,6 +174,29 @@ const PizzaForm: React.FC<IProps> = ({pizza}) => {
             />
           </FormControl>
           </Grid>
+          {pizza?.id? 
+          <Grid item xs={12} sm={12}>
+          <FormControl fullWidth  variant="outlined">
+            <Controller
+              name="status"
+              as={
+                <RadioGroup aria-label="status" defaultValue={pizza?.status} color="primary">
+                  <FormControlLabel
+                    value={PizzaStatus.AVAILABLE}
+                    control={<Radio />}
+                    label="Available"
+                  />
+                  <FormControlLabel 
+                   value={PizzaStatus.UNAVAILABLE}
+                   control={<Radio />} 
+                   label="Unavailable" />
+                </RadioGroup>
+              }
+              control={control}    
+             />
+           </FormControl>
+          </Grid> : null}
+          </Grid>
         <DialogActions style={{marginTop:"1rem"}}>
           <Button autoFocus onClick={closeModal} color="primary">
             Cancel
@@ -159,7 +205,6 @@ const PizzaForm: React.FC<IProps> = ({pizza}) => {
             Submit
           </Button>
         </DialogActions>
-          </Grid>
         </form>
     </Grid>
   );

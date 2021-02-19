@@ -53,8 +53,7 @@ const AddPizzaDialog: React.FC = () => {
   const {createPizza} = rootStore.pizzaStore;
   const {closeModal} = rootStore.modalStore;
   const [pizzaItem] = useState(new PizzaFormValues());
-  console.log(pizzaItem)
-  const [] = useState(false);
+
 
   // useEffect(() => {
   //   if (match.params.id) {

@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { PizzaService } from './pizza.service';
 import { CreatePizzaDto, EditPizzaDto, GetPizzaFilterDto } from './dto/pizza-dto';
 import { Pizza } from './pizza.entity';
+import { AuthGuard } from '@nestjs/passport';
 
 
 @Controller('pizza')
+@UseGuards(AuthGuard())
 export class PizzaController {
     constructor(private pizzaService: PizzaService) {}
        
@@ -22,7 +24,8 @@ export class PizzaController {
          return this.pizzaService.createPizza(createPizzaDto)
      }
 
-     @Put()
+     @Put('/:id')
+     @UsePipes(ValidationPipe)
      updatePizza(@Param('id', ParseIntPipe)  id: number, @Body() editPizzaDto: EditPizzaDto) : Promise<Pizza>{
          return this.pizzaService.editPizza(id, editPizzaDto)
      }

@@ -1,11 +1,22 @@
 import { PizzaStatus } from "../pizza-status.enum";
+import { IsNotEmpty } from "class-validator"
+
 
 
 export class CreatePizzaDto{
+    @IsNotEmpty()
     title: string;
+
+    @IsNotEmpty()
     description:string;
+
+    @IsNotEmpty()
     priceForSmall: number;
+
+    @IsNotEmpty()
     priceForMedium: number;
+
+    @IsNotEmpty()
     priceForLarge: number;
 }
 

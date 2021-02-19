@@ -10,6 +10,8 @@ import  AddPizzaDialog  from './AddPizzaDialog';
 import { observer } from 'mobx-react-lite';
 import PizzaForm from './PizzaForm';
 import { useEffect } from 'react';
+import { LoadingComponent } from '../../../app/layout/LoadingComponent';
+import { Skeleton } from '@material-ui/lab';
 
 
 const useStyles = makeStyles(theme => ({
@@ -49,17 +51,20 @@ const useStyles = makeStyles(theme => ({
 const PizzaList:React.FC = () => {
     const classes = useStyles();
     const rootStore = useContext(RootStoreContext)
-    const{pizzaList, loadPizza}=rootStore.pizzaStore
+    const{pizzaList, loadPizza, loadingInitial}=rootStore.pizzaStore
     const{openModal}=rootStore.modalStore
     
     useEffect(()=>{
       loadPizza()
+      console.log(pizzaList)
     },[loadPizza])
-    
+
+    if (loadingInitial)
+    return <LoadingComponent/>;
 
     return (
-     <>
     <div style={{ padding: 20 }}>
+      {loadingInitial? <Skeleton variant="rect" width={210} height={118} />:
       <Grid container className={classes.root} spacing={3}>
        <Grid item xs={12}>
         <Grid container justify="center" spacing={5}>
@@ -81,9 +86,8 @@ const PizzaList:React.FC = () => {
        </Grid>
        </Container>
       </Grid>
-     </Grid>
+     </Grid>}
     </div>
-    </>
-    )
+  )
 }
 export default withRouter(observer(PizzaList));

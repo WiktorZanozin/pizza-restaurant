@@ -58,15 +58,6 @@ export class PizzaService {
     }
 
     async editPizza(id: number, editPizzaDto: EditPizzaDto): Promise<Pizza>{
-        const{title, description, priceForLarge, priceForMedium, priceForSmall, status} = editPizzaDto;
-        const pizza = await this.pizzaRepository.findOne(id) 
-        pizza.title=title;
-        pizza.description=description;
-        pizza.priceForLarge= priceForLarge;
-        pizza.priceForMedium = priceForMedium;
-        pizza.priceForSmall = priceForSmall;
-        pizza.status = status;
-        await pizza.save();
-        return pizza;
+        return this.pizzaRepository.editPizza(id, editPizzaDto);
     }
 }

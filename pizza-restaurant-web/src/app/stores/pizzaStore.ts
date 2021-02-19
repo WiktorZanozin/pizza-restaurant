@@ -29,9 +29,10 @@ constructor( rootStore: RootStore) {
         pizzaList: computed
     })
     
-    autorun(() => this.loadPizza())
+  //  autorun(() => this.loadPizza())
 }
     get pizzaList() {
+      console.log(Array.from(this.pizzaAdminRegistry.values()))
       return Array.from(this.pizzaAdminRegistry.values())
      }
        createPizza = async (pizzaItem: IPizza) => {
@@ -69,10 +70,11 @@ constructor( rootStore: RootStore) {
         }
         } 
 
-        editPizza= async (pizzaItem: IPizza) => {
+        editPizza= async (id:number, pizzaItem: IPizza) => {
           this.submitting = true;
+          console.log(id)
           try {
-            await agent.PizzaAdmin.update(pizzaItem);
+            await agent.PizzaAdmin.update(id, pizzaItem);
             runInAction(() => {
               this.pizzaAdminRegistry.set(pizzaItem.id, pizzaItem);
               this.pizzaItem = pizzaItem;

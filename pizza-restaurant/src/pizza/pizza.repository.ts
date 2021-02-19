@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 import { Pizza } from "./pizza.entity";
-import { CreatePizzaDto, GetPizzaFilterDto } from './dto/pizza-dto';
+import { CreatePizzaDto, EditPizzaDto, GetPizzaFilterDto } from './dto/pizza-dto';
 import { PizzaStatus } from "./pizza-status.enum";
 
 @EntityRepository(Pizza)
@@ -34,5 +34,20 @@ export class PizzaRepository extends Repository<Pizza>{
         await pizza.save();
         
         return pizza
+    }
+
+    async editPizza(id: number, editPizzaDto: EditPizzaDto): Promise<Pizza>{
+        const{title, description, priceForLarge, priceForMedium, priceForSmall, status} = editPizzaDto;
+        const pizza = await this.findOne(id) 
+
+        pizza.title=title;
+        pizza.description=description;
+        pizza.priceForLarge= priceForLarge;
+        pizza.priceForMedium = priceForMedium;
+        pizza.priceForSmall = priceForSmall;
+        pizza.status = status;
+        
+        await pizza.save();
+        return pizza;
     }
 }

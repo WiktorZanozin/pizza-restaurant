@@ -24,7 +24,7 @@ const PizzaAdmin={
     list:():Promise<IPizza[]>=>requests.get('/pizza'),
     details:(id:string)=>requests.get(`/pizza/${id}`),
     create:(pizza:IPizza)=>requests.post('/pizza/', pizza),
-    update:(pizza:IPizza)=>requests.put(`/pizza/${pizza.id}`, pizza),
+    update:(id: number, pizza:IPizza)=>requests.put(`/pizza/${id}`, pizza),
     delete:(id:number)=>requests.delete(`/pizza/${id}`),
 }
 
